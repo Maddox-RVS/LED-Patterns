@@ -19,7 +19,9 @@
 // strandtest example for more information on possible values.
 Adafruit_NeoPixel pixels(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
 
-#define DELAYVAL 40 // Time (in milliseconds) to pause between pixels
+int DELAYVAL = 40; // Time (in milliseconds) to pause between pixels
+int LEDcolor = 0;
+bool trough = true;
 
 void setup() {
   // These lines are specifically to support the Adafruit Trinket 5V 16 MHz.
@@ -33,14 +35,34 @@ void setup() {
 }
 
 void loop() {
-  //Serial.print("-Start\n-For loop 1\n");
-  //pixels.clear(); 
+  Serial.print("-Start\n-For loop 1\n"); 
 
   for(int i=0, j=NUMPIXELS; i<NUMPIXELS; i++, j--) { 
-    //Serial.println(i);
+    Serial.println(i);
 
-    pixels.setPixelColor(i-1, pixels.Color(0, 0, 200));
-    pixels.setPixelColor(j, pixels.Color(200, 0, 0));
+    switch (LEDcolor)
+    {
+      case 0:
+        pixels.setPixelColor(i-1, pixels.Color(0, 0, 255));
+        pixels.setPixelColor(j, pixels.Color(255, 0, 0));
+        break;
+      case 1:
+        pixels.setPixelColor(i-1, pixels.Color(0, 255, 100));
+        pixels.setPixelColor(j, pixels.Color(100, 255, 0));
+        break;
+      case 2:
+        pixels.setPixelColor(i-1, pixels.Color(0, 255, 0));
+        pixels.setPixelColor(j, pixels.Color(255, 0, 100));
+        break;
+      case 3:
+        pixels.setPixelColor(i-1, pixels.Color(0, 255, 0));
+        pixels.setPixelColor(j, pixels.Color(100, 0, 255));
+        break;
+      case 4:
+        pixels.setPixelColor(i-1, pixels.Color(100, 255, 100));
+        pixels.setPixelColor(j, pixels.Color(100, 200, 255));
+        break;
+    }
 
     pixels.show();
     if (i != NUMPIXELS-1)
@@ -49,5 +71,31 @@ void loop() {
       pixels.clear(); 
     }     
   }
-  //Serial.print("-End\n");
+
+  if (LEDcolor == 4)
+      {
+        LEDcolor = 0;
+      }
+  LEDcolor++;
+
+  if (trough == true)
+  {
+    DELAYVAL -= 5;
+
+    if (DELAYVAL <= 0)
+    {
+      trough = false;
+    }
+  }
+  else if (trough == false)
+  {
+    DELAYVAL += 5;
+
+    if (DELAYVAL >= 40)
+    {
+      trough = true;
+    }
+  }
+  
+  Serial.print("-End\n");
 }
