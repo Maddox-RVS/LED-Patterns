@@ -33,45 +33,21 @@ void setup() {
 }
 
 void loop() {
-  Serial.print("-Start\n-For loop 1\n");
-  pixels.clear(); // Set all pixel colors to 'off'
+  //Serial.print("-Start\n-For loop 1\n");
+  //pixels.clear(); 
 
-  // The first NeoPixel in a strand is #0, second is 1, all the way up
-  // to the count of pixels minus one.
-  for(int i=-4; i<NUMPIXELS; i++) { // For each pixel...
-    Serial.println(i);
-    // pixels.Color() takes RGB values, from 0,0,0 up to 255,255,255
-    // Here we're using a moderately bright green color:
-    pixels.setPixelColor(i, pixels.Color(0, 0, 200));
-    pixels.setPixelColor(i+1, pixels.Color(0, 200, 0));
-    pixels.setPixelColor(i+2, pixels.Color(200, 0, 0));
-    pixels.setPixelColor(i+3, pixels.Color(0, 200, 200));
-    pixels.setPixelColor(i+4, pixels.Color(200, 0, 200));    
+  for(int i=0, j=NUMPIXELS; i<NUMPIXELS; i++, j--) { 
+    //Serial.println(i);
 
-    pixels.show();   // Send the updated pixel colors to the hardware.
+    pixels.setPixelColor(i-1, pixels.Color(0, 0, 200));
+    pixels.setPixelColor(j, pixels.Color(200, 0, 0));
 
-    delay(DELAYVAL);
-
-    pixels.clear();
+    pixels.show();
+    if (i != NUMPIXELS-1)
+    {  
+      delay(DELAYVAL);
+      pixels.clear(); 
+    }     
   }
-
-   Serial.print("-For loop 2\n");
-   for(int i=NUMPIXELS + 4; i>-2; i--) { // For each pixel...
-    // pixels.Color() takes RGB values, from 0,0,0 up to 255,255,255
-    // Here we're using a moderately bright green color:
-    Serial.println(i);
-
-    pixels.setPixelColor(i, pixels.Color(0, 0, 200));
-    pixels.setPixelColor(i-1, pixels.Color(0, 200, 0));
-    pixels.setPixelColor(i-2, pixels.Color(200, 0, 0));
-    pixels.setPixelColor(i-3, pixels.Color(0, 200, 200));
-    pixels.setPixelColor(i-4, pixels.Color(200, 0, 200)); 
-
-    pixels.show();   // Send the updated pixel colors to the hardware.
-
-    delay(DELAYVAL);
-
-    pixels.clear();
-  }
-  Serial.print("-End\n");
+  //Serial.print("-End\n");
 }
